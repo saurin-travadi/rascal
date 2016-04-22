@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTest", "ServiceTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetVINData", "GetVINData\GetVINData.csproj", "{0AE296C9-BD47-412C-8F66-8DF735EB1216}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetRecallCampaign", "GetRecallCampaign\GetRecallCampaign.csproj", "{F1134806-48A1-46F6-AB41-E045BD65A618}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetTabDelimitedFile", "GetTabDelimitedFile\GetTabDelimitedFile.csproj", "{F1134806-48A1-46F6-AB41-E045BD65A618}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
