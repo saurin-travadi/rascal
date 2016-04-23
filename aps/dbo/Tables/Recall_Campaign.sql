@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[Recall_Campaign] (
+    [RECORD_ID]         INT            NULL,
+    [CAMPNO]            VARCHAR (12)   NULL,
+    [MAKETXT]           VARCHAR (25)   NULL,
+    [MODELTXT]          VARCHAR (256)  NULL,
+    [YEARTXT]           CHAR (4)       NULL,
+    [MFGCAMPNO]         VARCHAR (20)   NULL,
+    [COMPNAME]          VARCHAR (256)  NULL,
+    [MFGNAME]           VARCHAR (40)   NULL,
+    [BGMAN]             VARCHAR (8)    NULL,
+    [ENDMAN]            VARCHAR (8)    NULL,
+    [RCLTYPECD]         VARCHAR (4)    NULL,
+    [POTAFF]            VARCHAR (10)   NULL,
+    [ODATE]             CHAR (8)       NULL,
+    [INFLUENCED_BY]     CHAR (4)       NULL,
+    [MFGTXT]            VARCHAR (40)   NULL,
+    [RCDATE]            CHAR (8)       NULL,
+    [DATEA]             CHAR (8)       NULL,
+    [RPNO]              CHAR (3)       NULL,
+    [FMVSS]             CHAR (10)      NULL,
+    [DESC_DEFECT]       VARCHAR (2000) NULL,
+    [CONEQUENCE_DEFECT] VARCHAR (2000) NULL,
+    [CORRECTIVE_ACTION] VARCHAR (2000) NULL,
+    [NOTES]             VARCHAR (2000) NULL,
+    [RCL_CMPT_ID]       VARCHAR (27)   NULL
+);
+
