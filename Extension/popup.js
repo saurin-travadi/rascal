@@ -35,6 +35,10 @@ function onGetNextClick() {
         url: "http://ec2-54-85-96-2.compute-1.amazonaws.com/GetVin.aspx",
         data: { 'user': user, 'vin': '', 'data': '' },
         success: function (data) {
+            $('#TotalRemining').val(data.TotalRemining);
+            $('#TotalReserved').val(data.TotalReserved);
+            $('#CountComplete').val(data.TotalReserved - data.TotalRemining);
+
             chrome.tabs.executeScript({
                 code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
             });

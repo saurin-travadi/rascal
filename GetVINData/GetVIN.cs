@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -9,8 +10,6 @@ namespace MyVINService
 {
     public class GetVIN : IHttpHandler
     {
-        static int CurrentCounter;
-
         public bool IsReusable
         {
             get
@@ -19,48 +18,53 @@ namespace MyVINService
             }
         }
 
+        private UserRequest UserRequest { get; set; }
         public void ProcessRequest(HttpContext context)
         {
             context.Response.AddHeader("Content-Type", "application/json\n\n");
             context.Response.Buffer = true;
 
-            var scriptFile = Path.Combine(context.Server.MapPath("."), "vinscript.rjs");
-            var data = File.ReadAllText(scriptFile);
-            var vins = File.ReadLines(Path.Combine(context.Server.MapPath("."), "vin.csv")).ToArray();
-            context.Response.Write(JsonConvert.SerializeObject(new VINResponse() { VIN = vins[CurrentCounter++], TotalRemining = 20, TotalReserved = 40 }));
-            context.Response.Flush();
+            if (!string.IsNullOrEmpty(context.Request.Params["user"]))
+            {
+                UserRequest = new UserRequest();
+                UserRequest.User = context.Request.Params["user"];
+                if (string.IsNullOrEmpty(context.Request.Params["vin"]))
+                    UserRequest.VIN = context.Request.Params["vin"];
+
+                if (string.IsNullOrEmpty(context.Request.Params["data"]))
+                    UserRequest.Data = context.Request.Params["data"];
+
+                context.Response.Write(JsonConvert.SerializeObject(ProcessVIN()));
+                context.Response.Flush();
+            }
         }
 
-        public void Process(HttpContext context)
+        private VINResponse ProcessVIN()
         {
-            context.Response.AddHeader("Content-Type", "application/json\n\n");
-            context.Response.Buffer = true;
-
-            var scriptFile = Path.Combine(context.Server.MapPath("."), "vinscript.rjs");
-            var data = File.ReadAllText(scriptFile);
-
-            var vins = File.ReadLines(Path.Combine(context.Server.MapPath("."), "vin.csv")).ToArray();
-            if (CurrentCounter >= vins.Length) CurrentCounter = 0;
-
-            data = data.Replace("%VIN%", vins[CurrentCounter++]);
-
-            context.Response.Write(data);
-            context.Response.Flush();
+            var dataSet = clsDB.funcExecuteSQLDS(string.Format("usp_Recall_API_Process_Vin @User='{0}',@VIN='{1}',@Data='{2}'", UserRequest.User, UserRequest.VIN, UserRequest.Data), ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
+            if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
+            {
+                var dr = dataSet.Tables[0].Rows[0];
+                return new VINResponse() { VIN = dr["VIN"].ToString(), TotalRemining = dr["TotalRemaining"].ToString(), TotalReserved = dr["TotalReserved"].ToString() };
+            }
+            else
+            {
+                return new VINResponse();
+            }
         }
+    }
 
-        public VINResponse ProcessVIN(string userName, string VIN, string data)
-        {
-            var vins = File.ReadLines(Path.Combine(HttpContext.Current.Server.MapPath("."), "vin.csv")).ToArray();
-            if (CurrentCounter >= vins.Length) CurrentCounter = 0;
-
-            return new VINResponse() { VIN = vins[CurrentCounter++], TotalReserved = 147, TotalRemining = 147 - CurrentCounter };
-        }
+    public class UserRequest
+    {
+        public string User { get; set; }
+        public string VIN { get; set; }
+        public string Data { get; set; }
     }
 
     public class VINResponse
     {
         public string VIN { get; set; }
-        public int TotalReserved { get; set; }
-        public int TotalRemining { get; set; }
+        public string TotalReserved { get; set; }
+        public string TotalRemining { get; set; }
     }
 }
