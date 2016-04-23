@@ -1,7 +1,7 @@
 function getVIN(document_root) {
-    
-    //$('.recaptcha-checkbox-checkmark').attr('checked',true);
-    $('#VIN').focus();
+
+    document_root.getElementById('VIN').focus();
+    return null;
 }
 
 chrome.runtime.sendMessage({

@@ -35,18 +35,22 @@ function onGetNextClick() {
         url: "http://ec2-54-85-96-2.compute-1.amazonaws.com/GetVin.aspx",
         data: { 'user': user, 'vin': '', 'data': '' },
         success: function (data) {
-            $('#TotalRemining').val(data.TotalRemining);
-            $('#TotalReserved').val(data.TotalReserved);
-            $('#CountComplete').val(data.TotalReserved - data.TotalRemining);
+            $('#TotalRemining').html(data.TotalRemining);
+            $('#TotalReserved').html(data.TotalReserved);
+            $('#CountComplete').html(data.TotalReserved - data.TotalRemining);
 
             chrome.tabs.executeScript({
                 code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
             });
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
         }
     });
+
+    chrome.tabs.executeScript(null, {
+        file: "getVINSource.js"
+    }, null);
 }
 
 function onLogIn() {
@@ -69,6 +73,7 @@ function setLoggedIn() {
     $('#loggedInDiv').show();
 
     $('#user').html(readCookie('username'));
+    onGetNextClick();
 }
 
 function onReadRecall() {
@@ -90,16 +95,6 @@ function onReadRecall() {
         }
     });
 }
-
-readRecall = function (doc) {
-    var spans = $(document).find("span:contains('NHTSA Recall')");
-    alert(spans);
-    spans.each(function () {
-        var s = $(this);
-        var number = $(s).find('span a').html().replace('\n', '').replace('  ', '');
-        alert(number);
-    })
-};
 
 function createCookie(name, value, days) {
     if (days) {
