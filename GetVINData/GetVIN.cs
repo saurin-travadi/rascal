@@ -28,13 +28,14 @@ namespace MyVINService
             {
                 UserRequest = new UserRequest();
                 UserRequest.User = context.Request.Params["user"];
-                if (string.IsNullOrEmpty(context.Request.Params["vin"]))
+                if (!string.IsNullOrEmpty(context.Request.Params["vin"]))
                     UserRequest.VIN = context.Request.Params["vin"];
 
-                if (string.IsNullOrEmpty(context.Request.Params["data"]))
+                if (!string.IsNullOrEmpty(context.Request.Params["data"]))
                     UserRequest.Data = context.Request.Params["data"];
 
-                context.Response.Write(JsonConvert.SerializeObject(ProcessVIN()));
+                var res = ProcessVIN();
+                context.Response.Write(JsonConvert.SerializeObject(res));
                 context.Response.Flush();
             }
         }

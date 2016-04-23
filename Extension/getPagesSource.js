@@ -8,9 +8,12 @@ function DOMtoString(document_root) {
         retHtml += number + '~';
     });
 
-    retHtml += $('#VIN').val();
+    //read VIN from context html and not from input
+    var ymm = $('.contentbox h2')[0];
+    var vin = $($(ymm).find('span')[0]).html();
 
-    return retHtml;
+    var strData = vin + ":" + retHtml;
+    return strData;
 }
 
 chrome.runtime.sendMessage({

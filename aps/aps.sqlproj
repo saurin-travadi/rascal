@@ -89,6 +89,8 @@
     <Build Include="dbo\Stored Procedures\usp_Recall_WS_TruncateCampaign.sql" />
     <Build Include="Database Triggers\rds_deny_backups_trigger.sql" />
     <Build Include="Security\Permissions.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Recall_API_UserStatByDate.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Recall_API_UserStat.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\PostDeployment.sql" />

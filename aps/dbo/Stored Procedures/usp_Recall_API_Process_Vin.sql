@@ -8,7 +8,7 @@
 CREATE PROCEDURE [dbo].[usp_Recall_API_Process_Vin]
 	@User VARCHAR(20)
 	,@VIN VARCHAR(20)=null
-	,@Data VARCHAR(8000)=null
+	,@Data VARCHAR(8000)=' '
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -30,7 +30,7 @@ BEGIN
 	--Get User stats and next VIN
 	SELECT @VIN = MIN(CASE WHEN (LockOut IS NULL OR LockOut<GETDATE()) AND RecallData IS NULL THEN VIN ELSE 'ZZZZZZZZZZZZZZZZZ' END),
 			@TotalReserved = COUNT(*), 
-			@TotalRemaining = SUM(CASE WHEN RecallData IS NULL THEN 1 ELSE 0 END)-1  
+			@TotalRemaining = SUM(CASE WHEN RecallData IS NULL THEN 1 ELSE 0 END)  
 		FROM [dbo].[Recall_VinReservation] (NOLOCK) WHERE [UserId]=@UserID
 		GROUP BY [UserId]
 

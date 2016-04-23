@@ -1,8 +1,11 @@
 ﻿chrome.runtime.onMessage.addListener(function (request, sender) {
     if (request.action == "getSource") {
-        alert(request.source);
+        postData(request.source,'post');
     }
 });
+
+var baseURL = "http://localhost:33619/";
+var serviceURL = baseURL + "GetVin.aspx";
 
 function onWindowLoad() {
 
@@ -25,32 +28,70 @@ function onWindowLoad() {
     document.getElementById('next').addEventListener('click', onGetNextClick, false);
     document.getElementById('read').addEventListener('click', onReadRecall, false);
 
+    document.getElementById('download').attributes['href'].value = baseURL + "/DataDownload.aspx?user=" + user;
 }
 
 function onGetNextClick() {
+    postData(null,'get');
+}
 
+function onReadRecall() {
+
+    chrome.tabs.executeScript(null, {
+        file: "jquery-2.2.3.js"
+    }, function () {
+        if (chrome.runtime.lastError) {
+            alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
+        }
+        else {
+            chrome.tabs.executeScript(null, {
+                file: "getPagesSource.js"
+            }, function () {
+                if (chrome.runtime.lastError) {
+                    alert('There was an error injecting script : \n' + chrome.runtime.lastError.message);
+                }
+            });
+        }
+    });
+}
+
+function postData(data,action) {
     var user = readCookie('username');
+
+    if (data == null)
+        data = { user : user, vin: '', data: '' };
+    else {
+        data = { user: user, vin: data.split(':')[0], data: data.split(':')[1] };
+    }
+
     $.ajax({
         type: "POST",
-        url: "http://ec2-54-85-96-2.compute-1.amazonaws.com/GetVin.aspx",
-        data: { 'user': user, 'vin': '', 'data': '' },
+        url: serviceURL,
+        data: data,
         success: function (data) {
             $('#TotalRemining').html(data.TotalRemining);
             $('#TotalReserved').html(data.TotalReserved);
             $('#CountComplete').html(data.TotalReserved - data.TotalRemining);
 
-            chrome.tabs.executeScript({
-                code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
-            });
+            //TO AVOID SITUATION WHERE USER MIGHT NOT FINISH CAPTCHA PROCESS AND HIT READRECALL BUTTON
+            if (action == 'get') {
+                chrome.tabs.executeScript({
+                    code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
+                });
+            }
+            else if (action == 'post') {
+                chrome.tabs.executeScript({
+                    code: 'document.getElementById("VIN").value = ""'
+                });
+            }
+            chrome.tabs.executeScript(null, {
+                file: "getVINSource.js"
+            }, null);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
         }
     });
-
-    chrome.tabs.executeScript(null, {
-        file: "getVINSource.js"
-    }, null);
 }
 
 function onLogIn() {
@@ -73,27 +114,7 @@ function setLoggedIn() {
     $('#loggedInDiv').show();
 
     $('#user').html(readCookie('username'));
-    onGetNextClick();
-}
-
-function onReadRecall() {
-
-    chrome.tabs.executeScript(null, {
-        file: "jquery-2.2.3.js"
-    }, function () {
-        if (chrome.runtime.lastError) {
-            alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
-        }
-        else {
-            chrome.tabs.executeScript(null, {
-                file: "getPagesSource.js"
-            }, function () {
-                if (chrome.runtime.lastError) {
-                    alert('There was an error injecting script : \n' + chrome.runtime.lastError.message);
-                }
-            });
-        }
-    });
+    postData();
 }
 
 function createCookie(name, value, days) {

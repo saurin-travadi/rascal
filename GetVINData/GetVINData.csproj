@@ -74,6 +74,7 @@
     <Content Include="3rdParty\Newtonsoft.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="DataDownload.aspx" />
     <Content Include="VINScript.rjs" />
     <Content Include="vin.csv" />
     <None Include="Properties\PublishProfiles\aws.pubxml" />
@@ -92,6 +93,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsDB.cs" />
+    <Compile Include="DataDownload.aspx.cs">
+      <DependentUpon>DataDownload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DataDownload.aspx.designer.cs">
+      <DependentUpon>DataDownload.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GetVIN.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -7,12 +7,17 @@
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
+  "icons": {
+    "128": "icon128.png",
+    "16": "icon.png",
+    "48": "icon48.png"
+  },
   "content_scripts": [
-        {
-          "js": [ "jquery-2.2.3.js","popup.js" ],
-          "matches": [ "http://*/*", "https://*/*"]
-        }
-    ],
+    {
+      "js": [ "jquery-2.2.3.js", "popup.js" ],
+      "matches": [ "http://*/*", "https://*/*" ]
+    }
+  ],
   "permissions": [ "tabs", "<all_urls>" ],
   "content_security_policy": "script-src 'self' https://ec2-54-85-96-2.compute-1.amazonaws.com; object-src 'self'"
 }
