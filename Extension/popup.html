@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html style=''>
+<head>
+    <script src='jquery-2.2.3.js'></script>
+    <script src='popup.js'></script>
+    <style>
+        input {
+            height: 30px;
+        }
+    </style>
+</head>
+<body style="width:400px;">
+    <form>
+        <div id="loginDiv">
+            <span>User Name:</span>
+            <input type="text" id="txtName" maxlength="10" />
+            <input type="button" value="Login" id="login" />
+        </div>
+        <div id="loggedInDiv">
+            <input type='button' value='Get Next VIN' name='next' id='next' />
+            <input type='button' value='Read Recall' name='read' id='read' />
+            <div id='message' />
+            <div>
+                <div>
+                    <fieldset style="line-height:30px">
+                        <legend>
+                            Production Status
+                        </legend>
+                        <div style="float:left"><b>Welcome, <span id="user"></span></b></div>
+                        <div style="float:right"><input type="button" value="Forget Me" id="logout" /></div>
+                        <div style="clear:both"></div>
+                        <div style="float:left">
+                            Your Reserved Count Remaining
+                        </div>
+                        <div style="float:right">
+                            <span id="ReservedCountRemaining">1965</span>
+                        </div>
+                        <div style="clear:both"></div>
+                        <div style="float:left">
+                            Your Count Complete
+                        </div>
+                        <div style="float:right">
+                            <span id="CountComplete">785</span>
+                        </div>
+                        <div style="clear:both"></div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,18 @@ namespace MyVINService
         }
 
         public void ProcessRequest(HttpContext context)
+        {
+            context.Response.AddHeader("Content-Type", "application/json\n\n");
+            context.Response.Buffer = true;
+
+            var scriptFile = Path.Combine(context.Server.MapPath("."), "vinscript.rjs");
+            var data = File.ReadAllText(scriptFile);
+            var vins = File.ReadLines(Path.Combine(context.Server.MapPath("."), "vin.csv")).ToArray();
+            context.Response.Write(JsonConvert.SerializeObject(new VINResponse() { VIN = vins[CurrentCounter++], TotalRemining = 20, TotalReserved = 40 }));
+            context.Response.Flush();
+        }
+
+        public void Process(HttpContext context)
         {
             context.Response.AddHeader("Content-Type", "application/json\n\n");
             context.Response.Buffer = true;
