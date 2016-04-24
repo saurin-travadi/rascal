@@ -4,7 +4,7 @@
     }
 });
 
-var baseURL = "http://localhost:33619/";
+var baseURL = "http://ec2-54-85-96-2.compute-1.amazonaws.com/";
 var serviceURL = baseURL + "GetVin.aspx";
 
 function onWindowLoad() {
@@ -55,19 +55,21 @@ function onReadRecall() {
     });
 }
 
-function postData(data,action) {
+function postData(userData,action) {
     var user = readCookie('username');
+    var cntPosted = 0;
 
-    if (data == null)
-        data = { user : user, vin: '', data: '' };
+    if (userData == null)
+        userData = { user: user, vin: '', data: '' };
     else {
-        data = { user: user, vin: data.split(':')[0], data: data.split(':')[1] };
+        cntPosted = userData.split(':')[1].split('~').length;
+        userData = { user: user, vin: userData.split(':')[0], data: userData.split(':')[1] };
     }
 
     $.ajax({
         type: "POST",
         url: serviceURL,
-        data: data,
+        data: userData,
         success: function (data) {
             $('#TotalRemining').html(data.TotalRemining);
             $('#TotalReserved').html(data.TotalReserved);
@@ -78,15 +80,17 @@ function postData(data,action) {
                 chrome.tabs.executeScript({
                     code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
                 });
+                chrome.tabs.executeScript(null, {
+                    file: "getVINSource.js"
+                }, null);
             }
             else if (action == 'post') {
+                $('#postmessage').html((cntPosted-1) + ' numbers of recall posted to server.');
+
                 chrome.tabs.executeScript({
                     code: 'document.getElementById("VIN").value = ""'
                 });
             }
-            chrome.tabs.executeScript(null, {
-                file: "getVINSource.js"
-            }, null);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
