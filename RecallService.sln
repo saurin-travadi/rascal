@@ -29,6 +29,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extension", "Extension", "{
 		Extension\popup.js = Extension\popup.js
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ex", "Ex", "{44D03CF1-1F8D-4A2F-913A-95664500B7ED}"
+	ProjectSection(SolutionItems) = preProject
+		Ex\getPagesSource.js = Ex\getPagesSource.js
+		Ex\getVINSource.js = Ex\getVINSource.js
+		Ex\icon.png = Ex\icon.png
+		Ex\jquery-2.2.3.js = Ex\jquery-2.2.3.js
+		Ex\manifest.json = Ex\manifest.json
+		Ex\popup.js = Ex\popup.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
