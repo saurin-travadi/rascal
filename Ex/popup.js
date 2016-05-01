@@ -62,25 +62,6 @@ function postData(userData, action) {
         userData = { user: user, vin: userData.split(':')[0], data: userData.split(':')[1] };
     }
 
-    //$.ajax({
-    //    type: "POST",
-    //    url: serviceURL,
-    //    data: userData,
-    //    success: function (data) {
-    //        var resCnt = data.TotalReserved;
-    //        var resCom = data.TotalRemining;
-    //        chrome.tabs.executeScript(null, {
-    //            file: "getVINSource.js"
-    //        }); 
-    //        chrome.tabs.executeScript({
-    //            code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
-    //        });
-    //    },
-    //    error: function (XMLHttpRequest, textStatus, errorThrown) {
-    //        alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
-    //    }
-    //});
-
     $.ajax({
         type: "POST",
         url: serviceURL,

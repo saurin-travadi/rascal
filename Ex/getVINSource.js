@@ -11,21 +11,16 @@ function showStat(resCnt, resCom) {
 
     $('#recall_stat').remove();
 
-    var dd = $('<div id="recall_stat" style="background-color:gray; border:black solid 1px; text-align:center; height:60px; width:200px; position:absolute; left:20px; top:100px;">Status</div>');
-    $('#navSection').append(dd);
+    var d = $('<div />');
+    var html = '<div id="recall_stat" style="background-color:darkgray;border:black solid 1px; text-align:center; height:100px; width:250px; position:absolute; left:20px; top:150px;">';
+    html += '<div style="background-color:gray;font-size:20px">Status</div>';
+    html += '<div style="clear:both"></div><div style="float:left;font-size:18px;margin:5px;">Your Reserved Count</div>';
+    html += '<div style="float:right;font-size:18px;margin:5px;">' + resCnt + '</div><div style="clear:both"></div>';
+    html += '<div style="float:left;font-size:18px;margin:5px;">Your Count Complete</div><div style="float:right;font-size:18px;margin:5px;">' + resCom + '</div>';
+    html += '</div>';
+    $(d).html(html)
 
-    var d0 = $('<div style="clear:both" />');
-    $(dd).append(d0);
-
-    var d1 = $('<div style="float:left">Your Reserved Count</div><div style="float:right">' + resCnt + '</span></div>');
-    $(dd).append(d1);
-
-    var d2 = $('<div style="clear:both" />');
-    $(dd).append(d2);
-
-    var d3 = $('<div style="float:left">Your Count Complete</div><div style="float:right">' + resCom + '</span></div>');
-    $(dd).append(d3);
-
+    $('#navSection').append(d);
 }
 
 chrome.runtime.sendMessage({

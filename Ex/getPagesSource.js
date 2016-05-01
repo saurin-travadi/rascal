@@ -19,7 +19,7 @@ function DOMtoString(document_root) {
         var ymm = $('.contentbox h2')[0];
         var vin = $($(ymm).find('span')[0]).html();
 
-        var strData = vin + ":" + retHtml;
+        var strData = vin + ":" + retHtml.trim();
 
         $('.contentbox').remove();
         return strData;
