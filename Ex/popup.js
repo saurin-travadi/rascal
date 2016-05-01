@@ -1,6 +1,6 @@
 ﻿chrome.runtime.onMessage.addListener(function (request, sender) {
     if (request.action == "getSource") {
-        postData(request.source,'post');
+        postData(request.source, 'post');
     }
 });
 
@@ -15,11 +15,6 @@ var serviceURL = baseURL + "GetVin.aspx";
 
 function onWindowLoad() {
 
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        if (tabs[0].url.indexOf('vinrcl.safercar.gov') < 0)
-            chrome.tabs.update(tabs[0].id, { url: "http://vinrcl.safercar.gov" });
-    });
-
     var user = readCookie('username');
     if (user == null) {
         var user = prompt("Please enter your name", "");
@@ -28,10 +23,13 @@ function onWindowLoad() {
         }
     }
 
-    if(user!=null)
-        onReadRecall();
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0].url.indexOf('vinrcl.safercar.gov') < 0)
+            chrome.tabs.update(tabs[0].id, { url: "http://vinrcl.safercar.gov" });
+        if (user != null)
+            onReadRecall();
+    });
 }
-
 
 function onReadRecall() {
 
@@ -39,18 +37,19 @@ function onReadRecall() {
         file: "jquery-2.2.3.js"
     }, function () {
         if (chrome.runtime.lastError) {
-            alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
+            alert('There was an error injecting jquery 1: \n' + chrome.runtime.lastError.message);
         }
         else {
             chrome.tabs.executeScript(null, {
                 file: "getPagesSource.js"
             }, function () {
                 if (chrome.runtime.lastError) {
-                    alert('There was an error injecting script : \n' + chrome.runtime.lastError.message);
+                    alert('There was an error injecting script 2: \n' + chrome.runtime.lastError.message);
                 }
             });
         }
     });
+
 }
 
 function postData(userData, action) {
@@ -63,17 +62,37 @@ function postData(userData, action) {
         userData = { user: user, vin: userData.split(':')[0], data: userData.split(':')[1] };
     }
 
+    //$.ajax({
+    //    type: "POST",
+    //    url: serviceURL,
+    //    data: userData,
+    //    success: function (data) {
+    //        var resCnt = data.TotalReserved;
+    //        var resCom = data.TotalRemining;
+    //        chrome.tabs.executeScript(null, {
+    //            file: "getVINSource.js"
+    //        }); 
+    //        chrome.tabs.executeScript({
+    //            code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
+    //        });
+    //    },
+    //    error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //        alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);
+    //    }
+    //});
+
     $.ajax({
         type: "POST",
         url: serviceURL,
         data: userData,
         success: function (data) {
             chrome.tabs.executeScript({
-                code: 'document.getElementById("VIN").value = "' + data.VIN + '"'
+                code: 'var data=' + JSON.stringify(data)
+            }, function () {
+                chrome.tabs.executeScript(null, {
+                    file: "getVINSource.js"
+                });
             });
-            chrome.tabs.executeScript(null, {
-                file: "getVINSource.js"
-            }, null);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('There was an error injecting jquery : \n' + chrome.runtime.lastError.message);

@@ -37,7 +37,10 @@ namespace Service
             var downloadLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["Download_Drive_Folder"]);
             var serviceAccountEmail = ConfigurationManager.AppSettings["ServiceAccountEmail"];
 
-            var files = new GetDriveData.GetData() { KeyFileName = keyFilePath, DownloadLocation = downloadLocation, ServiceAccountEmail = serviceAccountEmail }.GetFiles();
+            //var files = new GetDriveData.GetData() { KeyFileName = keyFilePath, DownloadLocation = downloadLocation, ServiceAccountEmail = serviceAccountEmail }.GetFiles();
+
+            new GetDriveData.GetData() { KeyFileName = keyFilePath, DownloadLocation = downloadLocation, ServiceAccountEmail = serviceAccountEmail }.ReadDriveFolder();
+
         }
 
     }

@@ -22,10 +22,19 @@ namespace GetDriveData
 
         public string KeyFileName { get; set; }
 
-        public void ReadDriveFolder()
+        public void ReadDriveFolder(string folder= "LKQRecall")
         {
-            var files = GetFiles();
+            var CLIENT_ID = "109758991622-dj8k7pah7v9cko565fch86e6mgotfu9s.apps.googleusercontent.com";
+            var CLIENT_SECRET = "G84og276fZEMmoVaAmWxNq4n";
 
+            DriveService service = Authentication.AuthenticateOauth(CLIENT_ID, CLIENT_SECRET, "totalrecallauto@gmail.com");
+            string Q = "title = '" + folder + "' and mimeType = 'application/vnd.google-apps.folder'";
+            //string Q = "mimeType='application/vnd.google-apps.folder'";
+            var _mainDir = GoogleDriveHelper.GetFiles(service, Q);
+            if (_mainDir != null && _mainDir.Count > 0)
+            {
+
+            }
         }
 
         public string[] GetFiles()

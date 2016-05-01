@@ -7,7 +7,8 @@
     "default_icon": "icon.png"
   },
   "icons": {
-    "16": "icon.png"
+    "16": "icon.png",
+    "128": "icon128.png"
   },
   "background": {
     "scripts": [ "jquery-2.2.3.js","popup.js" ]
