@@ -30,6 +30,7 @@ BEGIN
 		
 		INSERT INTO dbo.Recall_VinReservation(UserId,VIN)
 		SELECT TOP (@CurrentUserResCnt) @CurrentUserId,VIN FROM dbo.Recall_VinInfo (NOLOCK) WHERE VIN NOT IN (SELECT VIN FROM dbo.Recall_VinReservation (NOLOCK))
+			ORDER BY RAND()
 
 		SET @Cnt=@Cnt+1
 	END

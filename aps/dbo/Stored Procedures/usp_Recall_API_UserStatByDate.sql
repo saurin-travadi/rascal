@@ -19,6 +19,7 @@ BEGIN
 			FROM [dbo].[Recall_VinReservation] vr (NOLOCK) JOIN [dbo].[Recall_User] u ON vr.UserId=u.UserId
 			WHERE vr.RecallData IS NOT NULL
 			GROUP BY u.UserName, CONVERT(DATE,DataCollectionOn)
+				ORDER BY 1, 2 DESC
 	ELSE
 	BEGIN
 		SELECT @UserID=UserId FROM dbo.[Recall_User] (NOLOCK) WHERE UserName=@User
@@ -27,5 +28,6 @@ BEGIN
 			FROM [dbo].[Recall_VinReservation] vr (NOLOCK) JOIN [dbo].[Recall_User] u ON vr.UserId=u.UserId
 			WHERE vr.RecallData IS NOT NULL AND vr.[UserId]=@UserID
 			GROUP BY UserName,CONVERT(DATE,DataCollectionOn)
+			ORDER BY 2 DESC
 	END
 END

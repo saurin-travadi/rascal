@@ -34,6 +34,9 @@ namespace MyVINService
                 if (!string.IsNullOrEmpty(context.Request.Params["data"]))
                     UserRequest.Data = context.Request.Params["data"];
 
+                if (!string.IsNullOrEmpty(context.Request.Params["error"]))
+                    UserRequest.ErrorOut = Convert.ToInt16(context.Request.Params["error"]);
+
                 var res = ProcessVIN();
                 context.Response.Write(JsonConvert.SerializeObject(res));
                 context.Response.Flush();
@@ -42,11 +45,11 @@ namespace MyVINService
 
         private VINResponse ProcessVIN()
         {
-            var dataSet = clsDB.funcExecuteSQLDS(string.Format("usp_Recall_API_Process_Vin @User='{0}',@VIN='{1}',@Data='{2}'", UserRequest.User, UserRequest.VIN, UserRequest.Data), ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
+            var dataSet = clsDB.funcExecuteSQLDS(string.Format("usp_Recall_API_Process_Vin @User='{0}',@VIN='{1}',@Data='{2}', @Error={3}", UserRequest.User, UserRequest.VIN, UserRequest.Data, UserRequest.ErrorOut), ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
             if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
             {
                 var dr = dataSet.Tables[0].Rows[0];
-                return new VINResponse() { VIN = dr["VIN"].ToString(), TotalRemining = dr["TotalRemaining"].ToString(), TotalReserved = dr["TotalReserved"].ToString() };
+                return new VINResponse() { VIN = dr["VIN"].ToString(), TotalRemining = dr["TotalRemaining"].ToString(), TotalReserved = dr["TotalReserved"].ToString(), Rate= dr["Rate"].ToString() };
             }
             else
             {
@@ -60,6 +63,7 @@ namespace MyVINService
         public string User { get; set; }
         public string VIN { get; set; }
         public string Data { get; set; }
+        public int ErrorOut { get; set; }
     }
 
     public class VINResponse
@@ -67,5 +71,6 @@ namespace MyVINService
         public string VIN { get; set; }
         public string TotalReserved { get; set; }
         public string TotalRemining { get; set; }
+        public string Rate { get; set; }
     }
 }

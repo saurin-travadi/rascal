@@ -91,8 +91,15 @@
     <Build Include="Security\Permissions.sql" />
     <Build Include="dbo\Stored Procedures\usp_Recall_API_UserStatByDate.sql" />
     <Build Include="dbo\Stored Procedures\usp_Recall_API_UserStat.sql" />
+    <Build Include="dbo\Tables\Recall_VinReservation_Archive.sql" />
+    <Build Include="dbo\Tables\Recall_VinInfo_Archive.sql" />
+    <Build Include="dbo\Tables\Recall_ProductionStat.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Recall_WS_ArchiveVinReservation.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SqlSchemaCompare1.scmp" />
   </ItemGroup>
 </Project>
