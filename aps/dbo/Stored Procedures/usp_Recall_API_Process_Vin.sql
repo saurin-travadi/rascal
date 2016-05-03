@@ -5,7 +5,7 @@
 --	if post, update previous VIN and get next available VIN by user.
 --	return user stats
 /* Use
-	[dbo].[usp_Recall_API_Process_Vin] @User='joe'
+	[dbo].[usp_Recall_API_Process_Vin] @User='saurin'
 	[dbo].[usp_Recall_API_Process_Vin] @User='joe', @VIN='1FMDU34X4TUB59529',@Data='09V399000~', @Error=0
 */
 -- =============================================
@@ -20,7 +20,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	DECLARE @UserID INT, @TotalReserved INT, @TotalRemaining INT, @Last10MinRate NUMERIC(3,2)
+	DECLARE @UserID INT, @TotalReserved INT, @TotalRemaining INT, @Last10MinRate NUMERIC(5,2), @TimeDiff INT
 
 	SELECT @UserID=UserId FROM dbo.[Recall_User] (NOLOCK) WHERE UserName=@User
 
@@ -42,6 +42,11 @@ BEGIN
 
 	SELECT @Last10MinRate = COUNT(1) FROM [dbo].[Recall_VinReservation] (NOLOCK) 
 		WHERE [UserId]=@UserID AND DataCollectionOn BETWEEN DATEADD(mi,-10,GETDATE()) AND GETDATE()	
+	SELECT @TimeDiff = DATEDIFF(MI,min(DataCollectionOn),max(DataCollectionOn)) FROM [dbo].[Recall_VinReservation] (NOLOCK) 
+		WHERE [UserId]=@UserID AND DataCollectionOn BETWEEN DATEADD(mi,-10,GETDATE()) AND GETDATE()	
+
+	IF @TimeDiff<>0
+		SET @Last10MinRate=@Last10MinRate/@TimeDiff
 
 	--Lock VIN which we are returning 
 	UPDATE [dbo].[Recall_VinReservation] SET [LockOut]=DATEADD(mi,1,GETDATE())

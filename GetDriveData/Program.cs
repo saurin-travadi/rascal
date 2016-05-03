@@ -14,7 +14,7 @@ namespace GetDriveData
         static void Main()
         {
             var obj = new GetData();
-            obj.ReadDriveFolder();
+            obj.ReadDriveFolderForFiles();
         }
     }
 }

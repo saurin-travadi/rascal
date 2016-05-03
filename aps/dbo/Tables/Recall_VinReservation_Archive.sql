@@ -9,3 +9,10 @@
     CONSTRAINT [FK_VinReservation_Archive_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Recall_User] ([UserId])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Recall_VinReservation_Archive_VIN]
+    ON [dbo].[Recall_VinReservation_Archive]([VIN] ASC);
+

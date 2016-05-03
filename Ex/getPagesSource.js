@@ -8,12 +8,22 @@ function DOMtoString(document_root) {
         return retHtml;
     }
     else {
-        var spans = $(document_root).find("span:contains('NHTSA Recall')");
-        spans.each(function () {
-            var s = $(this);
-            var number = $(s).find('span a').html().replace('\n', '').replace('  ', '');
-            retHtml += number + '~';
-        });
+        try {
+            var spans = $(document_root).find("span:contains('NHTSA Recall')");
+            spans.each(function () {
+                var s = $(this);
+                var ele = $(s).find('span a');
+
+                var number = '';
+                if ($(ele).length>0)
+                    number = $(ele).html().replace('\n', '').replace('  ', '');
+
+                retHtml += number + '~';
+            });
+
+        } catch (e) {
+            retHtml = '';
+        }
 
         //read VIN from context html and not from input
         var ymm = $('.contentbox h2')[0];

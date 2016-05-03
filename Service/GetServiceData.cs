@@ -33,13 +33,15 @@ namespace Service
 
         public void ReadVINFromDrive()
         {
-            var keyFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["KeyFileName"]);
-            var downloadLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["Download_Drive_Folder"]);
-            var serviceAccountEmail = ConfigurationManager.AppSettings["ServiceAccountEmail"];
+            var google_ClientId = ConfigurationManager.AppSettings["Google_ClientId"];
+            var google_Secret = ConfigurationManager.AppSettings["Google_Secret"];
+            var google_UserName = ConfigurationManager.AppSettings["Google_UserName"];
 
-            //var files = new GetDriveData.GetData() { KeyFileName = keyFilePath, DownloadLocation = downloadLocation, ServiceAccountEmail = serviceAccountEmail }.GetFiles();
+            var downloadFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["Download_Drive_Folder"]);
+            if (!Directory.Exists(downloadFolder))
+                Directory.CreateDirectory(downloadFolder);
 
-            new GetDriveData.GetData() { KeyFileName = keyFilePath, DownloadLocation = downloadLocation, ServiceAccountEmail = serviceAccountEmail }.ReadDriveFolder();
+            var res = new GetDriveData.GetData() { DownloadLocation=downloadFolder, GoogleClientId=google_ClientId, GoogleClientSecret=google_Secret, GoogleUserName=google_UserName }.ReadDriveFolderForFiles();
 
         }
 

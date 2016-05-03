@@ -74,7 +74,7 @@ namespace Service
                     clsLog.LogInfo("Process starting");
 
                     var drive = new GetDriveData.GetData() { DownloadLocation = ConfigurationManager.AppSettings["Download_Folder"] };
-                    drive.ReadDriveFolder();
+                    drive.ReadDriveFolderForFiles();
                     
                     //UpdateRowSource status for next run
                 }

@@ -13,12 +13,14 @@ BEGIN
     IF NOT EXISTS(SELECT 1 FROM [dbo].[Recall_VinReservation] (NOLOCK) WHERE [RecallData] IS NULL)
 	BEGIN
 
-		--Read RecallData + VIN in windows service, convert to .csv
-		SELECT [VIN], [RecallData] FROM [dbo].[Recall_VinReservation] (NOLOCK)
+		--Get recalldata='' (system marked, no recall found) for all the vins in VinInfo but not added to VinReservation
 
-		--Clear tables
-		TRUNCATE TABLE [dbo].[Recall_VinReservation]
-		TRUNCATE TABLE [dbo].[Recall_VinInfo]
+		--Map camp number to hollander number (Joe to provide spread sheet)
+
+		--map hollander number to LKQ number (Joe to provide spread sheet)
+		
+		--Read RecallData + VIN in windows service, convert to .csv
+		SELECT [VIN], [RecallData], CampNo='', CompName='', HollanderPart='', LKQPart=''  FROM [dbo].[Recall_VinReservation] (NOLOCK)
 
 	END
 	
