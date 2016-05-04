@@ -65,6 +65,7 @@
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="Database Triggers\" />
     <Folder Include="Scripts" />
+    <Folder Include="dbo\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Recall_User.sql" />
@@ -95,6 +96,9 @@
     <Build Include="dbo\Tables\Recall_VinInfo_Archive.sql" />
     <Build Include="dbo\Tables\Recall_ProductionStat.sql" />
     <Build Include="dbo\Stored Procedures\usp_Recall_WS_ArchiveVinReservation.sql" />
+    <Build Include="dbo\Tables\Recall_LKQHollander_XRef.sql" />
+    <Build Include="dbo\Tables\Recall_CampaignHollander_XRef.sql" />
+    <Build Include="dbo\Functions\SplitString.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\PostDeployment.sql" />
