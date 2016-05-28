@@ -99,6 +99,8 @@
     <Build Include="dbo\Tables\Recall_LKQHollander_XRef.sql" />
     <Build Include="dbo\Tables\Recall_CampaignHollander_XRef.sql" />
     <Build Include="dbo\Functions\SplitString.sql" />
+    <Build Include="Scripts\Recalldata.sql" />
+    <Build Include="dbo\Tables\Recall_DirtyVIN.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\PostDeployment.sql" />
